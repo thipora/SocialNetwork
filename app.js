@@ -17,6 +17,10 @@ app.use('/posts', postRouter);
 app.use('/comments', commentRouter);
 app.use(logErrors);
 
+app.get("*", function (req, res) {
+    res.send("ERROR");
+  });
+
 const PORT = process.env.PORT;
 
 app.listen(PORT, (err) => {
