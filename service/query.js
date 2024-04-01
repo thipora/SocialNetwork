@@ -4,20 +4,17 @@ dotenv.config();
 
 const DB_NAME = process.env.DB_NAME;
 
-async function getQueryFields(table){
-    const queryFields = `DESC ${DB_NAME}.${table}`;
-    return await executeQuery(queryFields);
-}
-
-export default function generateCrudQuery(table, action, fieldsUpdate) {
+export default async function generateCrudQuery(table, action, fieldsUpdate) {
     let query = "";
     switch (action) {
         case 'create':
-            const queryFields = getQueryFields(table);
-            queryFields = queryFields.then(result => result);
-            const fields = queryFields.map(row => row.Field).join(', ');
-            const questionMarks = Array(fields.length).fill('?').join(', ');
-            query = `INSERT INTO ${DB_NAME}.${table} (${fields}) VALUES (${questionMarks})`;
+            const queryFields = `DESC ${DB_NAME}.${table}`;
+            const fieldsData = await executeQuery(queryFields);
+            const fields = fieldsData.map(row => row.Field);
+            // const newfieds = fields.map(({ id, ...rest }) => rest);
+            const newFields = fields.filter(field => field !== 'id');
+            const questionMarks = Array(newFields.length).fill('?');
+            query = `INSERT INTO ${DB_NAME}.${table} (${newFields.join(', ')}) VALUES (${questionMarks.join(', ')})`;
             break;
         case 'getAll':
             query = `SELECT * FROM ${DB_NAME}.${table}`;
