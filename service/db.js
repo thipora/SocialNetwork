@@ -1,29 +1,35 @@
-// import mysql from 'mysql2/DB_PROJECT';
 import mysql from 'mysql2';
-import 'dotenv/config'
+import dotenv from 'dotenv'
+dotenv.config();
 
+async function executeQuery(query, params) {
+    return new Promise((resolve, reject) => {
+        const connection = mysql.createConnection({
+            host: 'localhost',
+            user: 'root',
+            database: process.env.DB_NAME,
+            password: process.env.PASSWORD
+        });
 
-async function executeQuery(query, params){
-    let results;
-    const connection = await mysql.createConnection({
-        host: 'localhost',
-        user: 'root',
-        database: process.env.DB_NAME,
-        password: process.env.PASSWORD
+        connection.connect(err => {
+            if (err) {
+                reject(err);
+                return;
+            }
+
+            connection.execute(query, params, (error, results) => {
+                if (error) {
+                    reject(error);
+                    return;
+                }
+                
+                resolve(results);
+
+                connection.end();
+            });
+        });
     });
-
-    try {
-        console.log("hhhhhhhhhhhhhhhhhh");
-        results = await connection.execute(query,params);
-    } catch (err) {
-        console.log(err);
-    }
-    finally {
-        connection.end();
-    }
-    return results;
 }
 
-export{
-    executeQuery
-}
+
+export default executeQuery;

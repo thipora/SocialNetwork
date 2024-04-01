@@ -17,7 +17,8 @@ export class UserService {
     }
     
     async addUser(user) {
-        const { query, params } = addUserQuery();
+        const query = addUserQuery();
+        const params = [user.userName ,user.email, user.address, user.phone];
         const result =  await executeQuery(query, params);
         return result;
     }
@@ -29,8 +30,8 @@ export class UserService {
     }
 
     async updateUser(id, user) {
-        const { query, params } = updateUserQuery();
-        const result =  await executeQuery(query, params);
+        const query = updateUserQuery(id, user);
+        const result =  await executeQuery(query.updateQuery, query.params);
         return result;
     }
 }
