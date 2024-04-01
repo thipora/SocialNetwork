@@ -5,10 +5,12 @@ import { todoRouter } from './router/todoRouter.js'
 import { postRouter } from './router/postRouter.js'
 import { commentRouter } from './router/commentRouter.js'
 import {logErrors} from './middleware/logError.js'
+import cors from 'cors';
 
+app.use(cors());
 const app = express();
-
 app.use(express.json());
+
 app.use('/users', userRouter);
 app.use('/todos', todoRouter);
 app.use('/posts', postRouter);
