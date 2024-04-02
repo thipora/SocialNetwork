@@ -1,7 +1,6 @@
 {
   "name": "leah-thipiproject",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "type": "module",
   "scripts": {
@@ -14,7 +13,13 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "mysql": "^2.18.1",
     "mysql2": "^3.9.3",
-    "nodemon": "^3.1.0"
-  }
+    "nodemon": "^3.1.0",
+    "react-router-dom": "^6.22.3"
+  },
+  "devDependencies": {
+    "modules": "^0.4.0"
+  },
+  "description": ""
 }
