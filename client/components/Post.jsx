@@ -4,7 +4,7 @@ import {
   useNavigate
 } from "react-router-dom";
 import { UserContext } from '../UserProvider';
-import "../style.css";
+import "../css/style.css";
 
 function Post(props) {
   const post = props.post;
@@ -20,7 +20,7 @@ function Post(props) {
 
   function deletePost() {
     try{
-      fetch(`http://localhost:3000/posts/${post.id}`, {
+      fetch(`http://localhost:8080/posts/${post.id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',

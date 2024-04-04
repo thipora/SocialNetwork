@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import UpdateTodo from "./UpdateTodo";
-import "../style.css";
+import "../css/style.css";
 
 function Todo(props) {
     let todo = props.todo;
@@ -9,7 +9,7 @@ function Todo(props) {
 
     function deleteTodo() {
         try {
-            fetch(`http://localhost:3000/todos/${todo.id}`, {
+            fetch(`http://localhost:8080/todos/${todo.id}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
@@ -28,7 +28,7 @@ function Todo(props) {
     }
 
     function updateStatusTodo() {
-        fetch(`http://localhost:3000/todos/${todo.id}`, {
+        fetch(`http://localhost:8080/todos/${todo.id}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',

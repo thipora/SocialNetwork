@@ -1,8 +1,7 @@
 import React, { useState, useContext } from 'react'
-import { Post } from '../Post';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Post } from '../objects/Post';
 import { UserContext } from '../UserProvider';
-import "../style.css";
+import "../css/style.css";
 
 function AddNewPost(props) {
 

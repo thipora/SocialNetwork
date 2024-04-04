@@ -4,7 +4,7 @@ import {
   useLocation
 } from "react-router-dom";
 import AddNewComment from './AddNewComment';
-import "../style.css";
+import "../css/style.css";
 
 
 

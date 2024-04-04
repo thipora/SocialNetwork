@@ -11,13 +11,28 @@ export default async function getQuery(table, action, fieldsUpdate) {
             query = `SELECT * FROM ${DB_NAME}.${table}`;
             break;
         case 'getById':
-            query = `SELECT * FROM ${DB_NAME}.${table} WHERE id = ?`;
+            switch(table){
+                case 'todos':
+                case 'posts':
+                    query = `SELECT * FROM ${DB_NAME}.${table} WHERE userId = ?`;
+                    break;
+                case 'comments':
+                    query = `SELECT * FROM ${DB_NAME}.${table} WHERE postId = ?`;
+                    break;
+                case 'users':
+                case 'passwords':
+                    query = `SELECT * FROM ${DB_NAME}.${table} WHERE email = ?`;
+                    break;
+                default:
+                    query = `SELECT * FROM ${DB_NAME}.${table} WHERE id = ?`;
+            }
+            
             break;
         case 'create':
             const queryFields = `DESC ${DB_NAME}.${table}`;
             const fieldsData = await executeQuery(queryFields);
             const fields = fieldsData.map(row => row.Field);
-            const newFields = fields.filter(field => field !== 'id');
+            const newFields = fields.filter(field => field !== 'id'&&field !== 'status');
             const questionMarks = Array(newFields.length).fill('?');
             query = `INSERT INTO ${DB_NAME}.${table} (${newFields.join(', ')}) VALUES (${questionMarks.join(', ')})`;
             // INSERT INTO DB_PROJECT.users (username, email, address, phone) VALUES (?, ?, ?, ?)

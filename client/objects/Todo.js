@@ -1,4 +1,4 @@
-export class Todo{
+export default class Todo{
     
   
     constructor(userId,id, title,completed=false){
@@ -7,10 +7,6 @@ export class Todo{
         this.title=title
         this.completed=completed
     }
-   
-    
-
-    
   
 
 }

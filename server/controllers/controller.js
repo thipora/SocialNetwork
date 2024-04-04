@@ -16,7 +16,19 @@ export default class Controller {
                     result = await service.create(objectName, req.body);
                     break;
                 case 'delete':
-                    result = await service.delete(objectName, req.params.id);
+                    switch(objectName){
+                        case 'users':
+                            //מחיקה של todos, posts, comments
+                            result = await service.delete('users', req.params.id);
+                            break;
+                        case 'todos':
+                            result = await service.delete('todos', req.params.id);
+                        case 'posts':
+                            //מחיקה של comments
+                            result = await service.delete('users', req.params.id);
+                        case 'comments':
+                            result = await service.delete('todos', req.params.id);       
+                    }
                     break;
                 case 'update':
                     result = await service.update(objectName, req.params.id, req.body);

@@ -1,11 +1,11 @@
 import { useState, useEffect, useContext } from "react";
-import Post from "./Post";
+import {Post} from "../objects/Post";
 import {
   useNavigate,
   Link
 } from "react-router-dom";
 import { UserContext } from '../UserProvider';
-import "../style.css";
+import "../css/style.css";
 import AddNewPost from "./AddNewPost";
 
 
@@ -17,7 +17,7 @@ function Posts() {
   const { userID } = useContext(UserContext);
 
   useEffect(() => {
-    fetch(`http://localhost:3000/posts?userId=${userID}`)
+    fetch(`http://localhost:8080/posts?userId=${2}`)
       .then((response) => response.json())
       .then((data) => {
         setPosts(data);

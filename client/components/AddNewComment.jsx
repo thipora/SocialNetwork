@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { CommentClass } from '../CommentClass';
-import "../style.css";
+import { CommentClass } from '../objects/CommentClass.js';
+import "../css/style.css";
 
 function AddNewComment(props) {
     const [name, setName] = useState('');

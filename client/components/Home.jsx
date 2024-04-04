@@ -1,15 +1,16 @@
-import { useEffect, useState, useContext } from 'react'
+import { useContext } from 'react'
 import {
     Link,
     useNavigate
 } from "react-router-dom";
 import { UserContext } from '../UserProvider';
-import "../style.css";
+import "../css/style.css";
 
 
 function Home() {
     const { userID } = useContext(UserContext);
-    const name = JSON.parse(localStorage.getItem("currentUser")).name
+    // const name = JSON.parse(localStorage.getItem("currentUser")).name
+    const name = "jjjjjjjjj";
 
     const navigate = useNavigate()
     function logOut() {

@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect, useContext } from "react"
-import Todo from "./Todo"
+import Todo from "../objects/Todo"
 import AddNewTodo from './AddNewTodo'
 import { UserContext } from '../UserProvider';
 import { Link } from "react-router-dom";
@@ -21,7 +21,6 @@ function Todos() {
     fetch(`http://localhost:8080/todos`)
       .then((response) => response.json())
       .then((data) => {
-        console.log(data)
         setTodos(data);
       })
   }, [])

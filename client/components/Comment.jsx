@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import UpdateComment from './UpdateComment';
-import "../style.css";
+import "../css/style.css";
 
 function Comment(props) {
   const [toUpdate, setToUpdate] = useState(false)

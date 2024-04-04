@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react'
-import { Todo } from '../Todo';
+import Todo from '../objects/Todo.js';
 import { UserContext } from '../UserProvider';
-import "../style.css";
+import "../css/style.css";
 
 function AddNewTodo(props) {
     
