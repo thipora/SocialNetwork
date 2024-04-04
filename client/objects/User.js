@@ -1,4 +1,4 @@
-export class User{
+export class UserObject{
     constructor(userNmae,email,address,phone){
         this.userNmae=userNmae
         this.email=email

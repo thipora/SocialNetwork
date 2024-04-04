@@ -1,4 +1,4 @@
-export default class Todo{
+export default class TodoObject{
     
   
     constructor(userId,id, title,completed=false){

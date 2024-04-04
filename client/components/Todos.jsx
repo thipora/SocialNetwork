@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect, useContext } from "react"
-import Todo from "../objects/Todo"
+import Todo from "./Todo.jsx"
 import AddNewTodo from './AddNewTodo'
 import { UserContext } from '../UserProvider';
 import { Link } from "react-router-dom";

@@ -14,7 +14,7 @@ function Comments() {
   const postId = data.state.postId;
 
   useEffect(() => {
-    fetch(`http://localhost:3000/comments?postId=${postId}`)
+    fetch(`http://localhost:8080/comments/${postId}`)
     .then(response => response.json())
     .then(data => { setComments(data) })
   },

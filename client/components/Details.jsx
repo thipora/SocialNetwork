@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState } from 'react'
-import {User} from'../objects/User.js'
+import {UserObject} from'../objects/User.js'
 import {
   useLocation,
   useNavigate
@@ -19,7 +19,7 @@ function Details() {
 
     async function postNewUser() {
       try {
-        const user = new User(username, email, address, phone);
+        const user = new UserObject(username, email, address, phone);
         await fetch("http://localhost:8080/users", {
             method: 'POST',
             headers: {

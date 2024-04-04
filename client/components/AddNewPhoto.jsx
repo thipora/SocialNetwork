@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Photo } from "../Photo";
+import { PhotoObject } from "../Photo";
 import { useParams } from 'react-router-dom';
 import "../style.css";
 
@@ -20,8 +20,8 @@ function AddNewPhoto(props) {
                 id = json[0].nextPhotoId
             });
         const thumbnailUrl = url.replace("/600/", "/150/");
-        const photo = new Photo(id, props.albumId, title, url, thumbnailUrl)
-        fetch("http://localhost:3000/photos", {
+        const photo = new PhotoObject(id, props.albumId, title, url, thumbnailUrl)
+        fetch("http://localhost:8080/photos", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -31,7 +31,7 @@ function AddNewPhoto(props) {
             response.json();
         }).then(props.addToArr(photo)).catch(() => { console.log("adding fail") })
 
-        fetch("http://localhost:3000/nextID/1", {
+        fetch("http://localhost:8080/nextID/1", {
             method: "PATCH",
             body: JSON.stringify({
                 "nextPhotoId": id + 1

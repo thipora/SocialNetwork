@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react'
-import Todo from '../objects/Todo.js';
+import TodoObject from '../objects/Todo.js';
 import { UserContext } from '../UserProvider';
 import "../css/style.css";
 
@@ -18,7 +18,7 @@ function AddNewTodo(props) {
                 id = json[0].nextTodoId
             });
 
-        let todo = new Todo(userID, id, newTodo)
+        let todo = new TodoObject(userID, id, newTodo)
         fetch(`http://localhost:3000/todos`, {
             method: 'POST',
             headers: {

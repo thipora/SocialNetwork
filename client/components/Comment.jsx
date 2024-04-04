@@ -9,7 +9,7 @@ function Comment(props) {
 
   function deleteComment() {
    try{
-    fetch(`http://localhost:3000/comments?id=${comment.id}`, {
+    fetch(`http://localhost:8080/comments/id=${comment.id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',

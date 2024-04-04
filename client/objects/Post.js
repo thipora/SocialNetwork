@@ -1,4 +1,4 @@
-export class Post{
+export class PostObject{
     constructor(id,userId,title,body){
         this.userId=userId
         this.id=id;

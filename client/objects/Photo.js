@@ -1,4 +1,4 @@
-export class Photo{
+export class PhotoObject{
   
     constructor(id,albumId,title,url){
         this.albumId=albumId

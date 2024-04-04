@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import {Post} from "../objects/Post";
+import Post from "./Post.jsx";
 import {
   useNavigate,
   Link
@@ -17,7 +17,7 @@ function Posts() {
   const { userID } = useContext(UserContext);
 
   useEffect(() => {
-    fetch(`http://localhost:8080/posts?userId=${2}`)
+    fetch(`http://localhost:8080/posts?userId=${userID}`)
       .then((response) => response.json())
       .then((data) => {
         setPosts(data);

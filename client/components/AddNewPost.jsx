@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react'
-import { Post } from '../objects/Post';
+import { PostObject } from '../objects/Post';
 import { UserContext } from '../UserProvider';
 import "../css/style.css";
 
@@ -9,32 +9,14 @@ function AddNewPost(props) {
     const [body, setBody] = useState('')
     const { userID } = useContext(UserContext);
     async function addNewPost() {
-        let id;
-        await fetch("http://localhost:3000/nextID", {
-            method: 'GET'
-        })
-            .then((response) => response.json())
-            .then((json) => {
-                id = json[0].nextPostId
-            });
-        let post = new Post(id, userID, title, body);
-        fetch("http://localhost:3000/posts", {
+        let post = new PostObject(userID, title, body);
+        fetch("http://localhost:8080/posts", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(post)
         }).then(response => response.json()).then(props.addToArr(post)).catch(() => { console.log("adding fail") })
-        fetch("http://localhost:3000/nextID/1", {
-            method: "PATCH",
-            body: JSON.stringify({
-                "nextPostId": id + 1
-            }),
-            headers: {
-                "Content-type": "application/json; charset=UTF-8",
-            },
-        })
-            .then((response) => response.json())
     }
 
     return (
