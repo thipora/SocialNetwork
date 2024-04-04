@@ -1,0 +1,49 @@
+.albumsContainer {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .albumsHeader {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  .filterSelect {
+    margin-right: 10px;
+  }
+  
+  .albumList {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .albumListItem {
+    margin-bottom: 10px;
+  }
+  
+  .albumLink {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+  }
+  
+  .albumLink:hover {
+    text-decoration: underline;
+  }
+  
+  .addAlbumForm {
+    margin-top: 20px;
+  }
+  
+  .addAlbumInput {
+    margin-right: 10px;
+  }
+  
+  .addAlbumButton {
+    background-color: #4caf50;
+    color: white;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+  }

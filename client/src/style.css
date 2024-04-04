@@ -1,0 +1,96 @@
+/* בקובץ שלך, לדוגמה styles.css */
+
+/* Reset CSS */
+/* * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Global Styling */
+  /* body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa; /* רקע אולם כללי */
+    /* color: #343a40; צבע טקסט כללי */
+  /* } */
+  
+  /* .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+   */
+  /* Header */
+  /* header {
+    background-color: #007bff;
+    padding: 10px 0;
+  }
+  
+  header h1 {
+    color: #ffffff;
+  }
+   */
+  /* Navigation Bar */
+  /* nav {
+    background-color: #343a40;
+  }
+  
+  nav a {
+    color: #ffffff;
+    text-decoration: none;
+    padding: 10px 20px;
+    display: inline-block;
+  }
+  
+  nav a:hover {
+    background-color: #007bff;
+  } */
+  
+  /* Buttons */
+  /* button {
+    background-color: #28a745;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+  } */
+  
+  /* button:hover {
+    background-color: #218838;
+  } */
+  
+  /* Form Styling */
+  /* form {
+    margin-top: 20px;
+  }
+  
+  input,
+  textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+   */
+  /* Footer */
+  /* footer {
+    background-color: #343a40;
+    color: #ffffff;
+    text-align: center;
+    padding: 10px 0;
+  } */
+  
+  /* Custom Styling */
+  /* .custom-button {
+    background-color: #4CAF50;
+    color: #ffffff;
+    border-radius: 3px;
+    border: #45a049;
+    initial-value: #45a049;;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+  }
+  
+  .custom-button:hover {
+    background-color: #45a049;
+  } */
