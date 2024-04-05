@@ -8,36 +8,20 @@ function AddNewComment(props) {
     const email=JSON.parse(localStorage.getItem("currentUser")).email
 
     async function addNewComment() {
-
-        let id;
-        await fetch("http://localhost:3000/nextID", {
-            method: 'GET'
-        })
-            .then((response) => response.json())
-            .then((json) => {
-                id = json[0].nextCommentId
-            });
-        const comment = new CommentClass(id, props.postId, name, email, body);
-        const urlPost = `http://localhost:3000/comments`;
+        const comment = new CommentClass(props.postId, name, email, body);
+        const urlPost = `http://localhost:8080/comments`;
         fetch(urlPost, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(comment),
-        }).then(response => {
-            response.json();
-        }).then(props.addToArr(comment)).catch(() => { console.log("adding fail") })
-        fetch("http://localhost:3000/nextID/1", {
-            method: "PATCH",
-            body: JSON.stringify({
-                "nextCommentId": id + 1
-            }),
-            headers: {
-                "Content-type": "application/json; charset=UTF-8",
-            },
+        }).then(response => response.json())
+        .then(data => {
+            comment.id = data.insertId;
+            props.addToArr(comment);
         })
-            .then((response) => response.json())
+        .catch(() => { console.log("adding fail") })
     }
 
 

@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Comment from './Comment';
-import {
-  useLocation
-} from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
+import { UserContext } from '../UserProvider';
 import AddNewComment from './AddNewComment';
 import "../css/style.css";
 
@@ -12,6 +11,7 @@ function Comments() {
   const [comments, setComments] = useState([]);
   const data = useLocation();
   const postId = data.state.postId;
+  const { userID } = useContext(UserContext);
 
   useEffect(() => {
     fetch(`http://localhost:8080/comments/${postId}`)
@@ -37,6 +37,9 @@ function Comments() {
 
   return (
     <div>
+      <Link to={`/user/${userID}/posts`}>Back...</Link>
+      <h1>COMMENTS</h1>
+      <br />
       <AddNewComment postId={postId} addToArr={addToArr} />
       <ul>
         {comments.map(comment => (

@@ -6,7 +6,7 @@ function UpdateTodo(props) {
     const [title, setTitle] = useState(todo.title);
     async function updateTodo() {
         try {
-            const response = await fetch(`http://localhost:3000/todos/${todo.id}`, {
+            const response = await fetch(`http://localhost:8080/todos/${todo.id}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
@@ -15,13 +15,10 @@ function UpdateTodo(props) {
                     title: title,
                 }),
             });
-
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
-
-            const updatedTodo = await response.json();
-            props.updateArr(updatedTodo.id, title);
+            props.updateArr(todo.id, title);
         } catch (error) {
             console.error('Error updating TODO:', error);
         }

@@ -10,7 +10,7 @@ function UpdateComment(props) {
 
     async function updateComment() {
         try {
-            const response = await fetch(`http://localhost:3000/comments?id=${comment.id}`, {
+            const response = await fetch(`http://localhost:8080/comments/${comment.id}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
@@ -20,13 +20,13 @@ function UpdateComment(props) {
                     body: body
                 }),
             });
-            props.updateArr(comment.id, name, body);
 
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
 
-            const updatedComment = await response.json();
+            props.updateArr(comment.id, name, body);
+
         } catch (error) {
             console.error('Error updating Comment:', error);
         }

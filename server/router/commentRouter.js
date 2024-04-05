@@ -3,11 +3,11 @@ import Controller from '../controllers/controller.js'
 const commentRouter = express.Router();
 
 const controller = new Controller()
-commentRouter.get("/", (req, res, next) => controller.handleRequest(req, res, next, "getAll", "comments"));
-commentRouter.get("/:id", (req, res, next) => controller.handleRequest(req, res, next, "getById", "comments"));
+commentRouter.get("/", (req, res, next) => controller.handleRequest(req, res, next, "get", "comments"));
+commentRouter.get("/:postId", (req, res, next) => controller.handleRequest(req, res, next, "get", "comments"));
 commentRouter.post("/", (req, res, next) => controller.handleRequest(req, res, next, "create", "comments"));
 commentRouter.delete("/:id", (req, res, next) => controller.handleRequest(req, res, next, "delete", "comments"));
-commentRouter.put("/:id", (req, res, next) => controller.handleRequest(req, res, next, "update", "comments"));
+commentRouter.patch("/:id", (req, res, next) => controller.handleRequest(req, res, next, "update", "comments"));
 
 export{
     commentRouter

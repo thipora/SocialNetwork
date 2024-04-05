@@ -14,8 +14,6 @@ function Todos() {
   const [searchCriteria, setSearchCriteria] = useState('none');
   const [searchInputCriteria, setSearchInputCriteria] = useState('');
   const { userID } = useContext(UserContext);
-  const userId = userID;
-
 
   useEffect(() => {
     fetch(`http://localhost:8080/todos`)
@@ -49,7 +47,6 @@ function Todos() {
 
   function handleSortChange(event) {
     setSortCriteria(event.target.value);
-    console.log(event.target.value);
     sortTodos();
   };
 
@@ -61,7 +58,7 @@ function Todos() {
     switch (sortCriteria) {
       case 'sequential':
         let tempTodos = [...originaltodos];
-        tempTodos.sort((a, b) => (a.userID < b.userID) ? -1 : 1);
+        tempTodos.sort((a, b) => (parseInt(a.id) < parseInt(b.id)) ? -1 : 1);
         setTodos(tempTodos);
         break;
       case 'execution':
@@ -88,8 +85,8 @@ function Todos() {
     }
   };
 
-  function searchedTodos(todo) {
 
+  function searchedTodos(todo) {
     switch (searchCriteria) {
       case 'sequential':
         return (
@@ -101,22 +98,19 @@ function Todos() {
         );
       case 'alphabetical':
         return (
-          todo.title.toLowerCase().startsWith(searchInputCriteria.toLowerCase())
+          todo.title.toLowerCase().includes(searchInputCriteria.toLowerCase())
         );
       case 'none':
         return true;
       default:
         return false;
     }
-
   };
 
   return (
     <>
       <Link to={`/user/${userID}/home`}>Back...</Link>
       <h1>TODOS</h1>
-
-
 
       <select value={sortCriteria} onChange={handleSortChange}>
         <option value="sequential">sequential</option>
@@ -143,11 +137,10 @@ function Todos() {
             onChange={(event) => setSearchInputCriteria(event.target.value)}
           />
         )}
-
-
       </div>
+      
       <button onClick={() => { setAddTodo(!addTodo) }}>Add Todo</button>
-      {addTodo && <AddNewTodo addToArr={addToArr} />}
+      {addTodo && <AddNewTodo addToArr={!addToArr} />}
       {todos.map((todo) => { return (searchedTodos(todo) && <Todo key={todo.id} todo={todo} deleteFromArr={deleteFromArr} updateArr={updateArr} />) })}
     </>
   )

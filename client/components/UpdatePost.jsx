@@ -8,7 +8,7 @@ function UpdatePost(props) {
     const [body, setBody] = useState(post.body)
     async function updatePost() {
         try {
-            const response = await fetch(`http://localhost:3000/posts/${post.id}`, {
+            const response = await fetch(`http://localhost:8080/posts/${post.id}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
@@ -22,9 +22,7 @@ function UpdatePost(props) {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
-
-            const updatedPost = await response.json();
-            props.updateArr(updatedPost.id, title, body);
+            props.updateArr(post.id, title, body);
         } catch (error) {
             console.error('Error updating Post:', error);
         }

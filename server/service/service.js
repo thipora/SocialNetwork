@@ -2,28 +2,38 @@ import executeQuery from './db.js';
 import getQuery from './query.js'
 
 export default class Service {
-    async getAll(table) {
-        const query = await getQuery(table, "getAll");
-        const result = await executeQuery(query, null);
+
+    async get(table, params) {
+        const query = await getQuery(table, "get", params);
+        const result = await executeQuery(query, Object.values(params));
         return result;
     }
 
-    async getById(table, id) {
-        const query = await getQuery(table, "getById");
-        const result = await executeQuery(query, [id]);
-        return result;
-    }
-
-    async create(table, item) {
+    async create(table, params) {
         const query = await getQuery(table, "create");
-        const params = Object.values(item);
-        const result = await executeQuery(query, params);
+        const result = await executeQuery(query, Object.values(params));
         return result;
     }
 
-    async delete(table, id) {
-        const query = await getQuery(table, "delete");
-        const result = await executeQuery(query, [id]);
+    async delete(table, param) {
+        if(table=='users'){
+            const res = await this.get("users", param)
+            const userId = res[0].id;
+            await this.delete("todos", {"userId": userId});
+            await this.delete("posts", {"userId": userId});
+            await this.delete("comments", param);
+            await this.delete("passwords", param);
+
+        } else if(table=='posts'){
+            const res = await this.get("posts", param)
+            const postIds = res.map(post => post.id);
+            await Promise.all(postIds.map(async postId => {
+                await this.delete("comments", { "postId": postId });
+            }));
+        
+        }
+        const query = await getQuery(table, "delete", param);
+        const result = await executeQuery(query, Object.values(param));
         return result;
     }
 

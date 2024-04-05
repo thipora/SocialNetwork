@@ -1,8 +1,6 @@
 export class CommentClass{
     
-    constructor(id,postId,name,email,body){
-        
-        this.id=`${id}`
+    constructor(postId,name,email,body){
         this.postId=postId
         this.name=name
         this.email=email

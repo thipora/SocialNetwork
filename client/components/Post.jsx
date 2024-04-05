@@ -46,7 +46,7 @@ function Post(props) {
       <p>{post.id} - {post.title}</p>
       <button onClick={handleExpand}>Expand</button>
       <button onClick={deletePost}>Delete</button>
-      <button onClick={() => { setToUpdate(!toUpdate) }}>Update</button>
+      <button onClick={() => { setToUpdate(!toUpdate) }}>to update</button>
       <div>{toUpdate && <UpdatePost post={post} updateArr={props.updateArr} />}</div>
 
       {isExpanded && (

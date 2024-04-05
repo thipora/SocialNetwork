@@ -6,29 +6,14 @@ export default class Controller {
             const service = new Service();
             let result;
             switch (action) {
-                case 'getAll':
-                    result = await service.getAll(objectName);
-                    break;
-                case 'getById':
-                    result = await service.getById(objectName, req.params.id);
+                case 'get':
+                    result = await service.get(objectName, req.params);
                     break;
                 case 'create':
                     result = await service.create(objectName, req.body);
                     break;
                 case 'delete':
-                    switch(objectName){
-                        case 'users':
-                            //מחיקה של todos, posts, comments
-                            result = await service.delete('users', req.params.id);
-                            break;
-                        case 'todos':
-                            result = await service.delete('todos', req.params.id);
-                        case 'posts':
-                            //מחיקה של comments
-                            result = await service.delete('users', req.params.id);
-                        case 'comments':
-                            result = await service.delete('todos', req.params.id);       
-                    }
+                    result = await service.delete(objectName, req.params, req.body);
                     break;
                 case 'update':
                     result = await service.update(objectName, req.params.id, req.body);

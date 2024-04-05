@@ -9,35 +9,19 @@ function AddNewTodo(props) {
     const { userID } = useContext(UserContext);
 
     async function addNewTodo() {
-        let id;
-        await fetch("http://localhost:3000/nextID", {
-            method: 'GET'
-        })
-            .then((response) => response.json())
-            .then((json) => {
-                id = json[0].nextTodoId
-            });
-
-        let todo = new TodoObject(userID, id, newTodo)
-        fetch(`http://localhost:3000/todos`, {
+        let todo = new TodoObject(userID, newTodo)
+        fetch(`http://localhost:8080/todos`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(todo),
         }).then(response => response.json())
-        .then(props.addToArr(todo))
-        .catch(() => { console.log("adding fail") })
-        fetch("http://localhost:3000/nextID/1", {
-            method: "PATCH",
-            body: JSON.stringify({
-                "nextTodoId": id + 1
-            }),
-            headers: {
-                "Content-type": "application/json; charset=UTF-8",
-            },
+        .then(data => {
+            todo.id = data.insertId;
+            props.addToArr(todo);
         })
-            .then((response) => response.json())
+        .catch(() => { console.log("adding fail") })
     }
 
     return (

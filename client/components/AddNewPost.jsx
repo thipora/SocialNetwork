@@ -16,7 +16,12 @@ function AddNewPost(props) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(post)
-        }).then(response => response.json()).then(props.addToArr(post)).catch(() => { console.log("adding fail") })
+        }).then(response => response.json())
+        .then(data => {
+            post.id = data.insertId;
+            props.addToArr(post);
+        })
+        .catch(() => { console.log("adding fail") })
     }
 
     return (

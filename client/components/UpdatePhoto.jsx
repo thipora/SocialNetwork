@@ -11,7 +11,7 @@ function UpdatePhoto(props) {
     async function updatePhoto() {
         try {
             const thumbnailUrl=url.replace("/600/", "/150/")
-            const response = await fetch(`http://localhost:3000/photos/${photo.id}`, {
+            const response = await fetch(`http://localhost:8080/photos/${photo.id}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',

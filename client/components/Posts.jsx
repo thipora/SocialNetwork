@@ -1,9 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import Post from "./Post.jsx";
-import {
-  useNavigate,
-  Link
-} from "react-router-dom";
+import { Link } from "react-router-dom";
 import { UserContext } from '../UserProvider';
 import "../css/style.css";
 import AddNewPost from "./AddNewPost";
@@ -26,7 +23,6 @@ function Posts() {
 
   const handleSearchChange = (event) => {
     setSearchCriteria(event.target.value);
-
   };
   function deletePost(id) {
     setPosts(posts.filter(item => item.id !== id))
@@ -50,7 +46,7 @@ function Posts() {
         );
       case 'title':
         return (
-          post.title.toLowerCase().startsWith(searchTerm.toLowerCase())
+          post.title.toLowerCase().includes(searchTerm.toLowerCase())
         );
       case 'none':
         return true;
@@ -64,7 +60,7 @@ function Posts() {
       <Link to={`/user/${userID}/home`}>Back...</Link>
       <h1>POSTS</h1>
       <br />
-      <button onClick={() => { setAddPost(true); }}>Add New Post</button>
+      <button onClick={() => { setAddPost(!addPost); }}>Add New Post</button>
       {addPost && <AddNewPost addToArr={addToArr} />}
       <br />
       <select value={searchCriteria} onChange={handleSearchChange}>
@@ -72,12 +68,14 @@ function Posts() {
         <option value="title">title</option>
         <option value="none">none</option>
       </select>
-      <input
-        type="text"
-        placeholder="search term"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-      />
+      {searchCriteria !== 'none' && (
+        <input
+          type="text"
+          placeholder="search term"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      )}
       {posts.map((post) => (searchedPosts(post) &&
         <Post key={post.id} post={post} deletePost={deletePost} updateArr={updateArr} />
       ))}
