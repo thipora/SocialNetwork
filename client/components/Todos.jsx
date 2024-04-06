@@ -16,7 +16,7 @@ function Todos() {
   const { userID } = useContext(UserContext);
 
   useEffect(() => {
-    fetch(`http://localhost:8080/todos`)
+    fetch(`http://localhost:8080/todos/${userID}`)
       .then((response) => response.json())
       .then((data) => {
         setTodos(data);
@@ -138,9 +138,9 @@ function Todos() {
           />
         )}
       </div>
-      
+
       <button onClick={() => { setAddTodo(!addTodo) }}>Add Todo</button>
-      {addTodo && <AddNewTodo addToArr={!addToArr} />}
+      {addTodo && <AddNewTodo addToArr={addToArr} />}
       {todos.map((todo) => { return (searchedTodos(todo) && <Todo key={todo.id} todo={todo} deleteFromArr={deleteFromArr} updateArr={updateArr} />) })}
     </>
   )

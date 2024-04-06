@@ -1,11 +1,12 @@
 import React from 'react'
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import {UserObject} from'../objects/User.js'
 import {
   useLocation,
   useNavigate
 } from "react-router-dom";
 import "../css/style.css";
+import { UserContext } from '../UserProvider.jsx';
 
 
 
@@ -13,31 +14,26 @@ function Details() {
     const [username, setUsername]=useState("")
     const [phone, setPhone]=useState(null)
     const [address, setAddress]=useState("")
+    const { updateUserID } = useContext(UserContext);
     const navigate=useNavigate()
     const location = useLocation();
     const email = location.state.email;
 
     async function postNewUser() {
       try {
-        const user = new UserObject(username, email, address, phone);
-        await fetch("http://localhost:8080/users", {
+        const currentUser = new UserObject(username, email, address, phone);
+        fetch("http://localhost:8080/users", {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
           },
-            body: JSON.stringify(user),
+            body: JSON.stringify(currentUser),
           }).then(response => response.json())
           .then(data => {
-            const id = data.insertId;
-            const currentUser = {
-              "id": `${id}`,
-              "username": `${username}`,
-              "email": `${email}`,
-              "address": `${address}`,
-              "phone": `${phone}`
-              };
+            currentUser.id = data.insertId;
             localStorage.setItem("currentUser", JSON.stringify(currentUser));
-            navigate(`/user/${id}/home`);
+            updateUserID();
+            navigate(`/user/${currentUser.id}/home`);
         });
       } catch (error) {
         console.error("Error in postNewUser:", error);

@@ -14,7 +14,7 @@ function Posts() {
   const { userID } = useContext(UserContext);
 
   useEffect(() => {
-    fetch(`http://localhost:8080/posts?userId=${userID}`)
+    fetch(`http://localhost:8080/posts/${userID}`)
       .then((response) => response.json())
       .then((data) => {
         setPosts(data);

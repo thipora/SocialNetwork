@@ -3,15 +3,14 @@ import {
     Link,
     useNavigate
 } from "react-router-dom";
-import { UserContext } from '../UserProvider';
+import { UserContext } from '../UserProvider.jsx';
 import "../css/style.css";
 
 
 function Home() {
     const { userID } = useContext(UserContext);
-    // const name = JSON.parse(localStorage.getItem("currentUser")).name
-    const name = "jjjjjjjjj";
-
+    const name = JSON.parse(localStorage.getItem("currentUser")).username
+    
     const navigate = useNavigate()
     function logOut() {
         localStorage.removeItem("currentUser");
@@ -23,8 +22,8 @@ function Home() {
             <h1>{name}</h1>
             <Link to={{ pathname: `/user/${userID}/info` }}>Info</Link>
             <br />
-            <Link to={{ pathname: `/user/${userID}/albums` }} >Albums</Link>
-            <br />
+            {/* <Link to={{ pathname: `/user/${userID}/albums` }} >Albums</Link>
+            <br /> */}
             <Link to={{ pathname: `/user/${userID}/posts` }}>Posts</Link>
             <br />
             <Link to={{ pathname: `/user/${userID}/todos` }}>Todos</Link>
