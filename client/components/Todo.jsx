@@ -6,32 +6,35 @@ function Todo(props) {
     let todo = props.todo;
     const [updateTodo, setUpdateTodo] = useState(false);
     const [completed, setCompleted] = useState(todo.completed);
+    const token = localStorage.getItem("TOKEN");
 
     function deleteTodo() {
         try {
-            fetch(`http://localhost:8080/todos/${todo.id}`, {
+            fetch(`http://localhost:8080/todos?id=${todo.id}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 }
             }).then(response => {
-                response.json();
                 if (!response.ok) {
-                    throw new Error('Network response was not ok');
+                    throw new Error(`Error ${response.status}: ${response.statusText}`);  
                 }
+                return response.json();
             })
             props.deleteFromArr(todo.id);
         }
         catch (error) {
-            console.log(error)
+            alert(error.message)
         }
     }
 
     function updateStatusTodo() {
-        fetch(`http://localhost:8080/todos/${todo.id}`, {
+        fetch(`http://localhost:8080/todos?id=${todo.id}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify({
                 completed: !completed,

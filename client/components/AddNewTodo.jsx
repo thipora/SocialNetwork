@@ -7,21 +7,28 @@ function AddNewTodo(props) {
     
     const [newTodo, setNewTodo] = useState('');
     const { userID } = useContext(UserContext);
+    const token = localStorage.getItem("TOKEN");
 
     async function addNewTodo() {
         let todo = new TodoObject(userID, newTodo)
-        fetch(`http://localhost:8080/todos`, {
+        await fetch(`http://localhost:8080/todos`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify(todo),
-        }).then(response => response.json())
+        }).then(response => {
+            console.log(response);
+            if(!response.ok)
+                throw new Error(`Error ${response.status}: ${response.statusText}`);
+            return response.json();
+        })
         .then(data => {
             todo.id = data.insertId;
             props.addToArr(todo);
         })
-        .catch(() => { console.log("adding fail") })
+        .catch(error => alert(error.message))
     }
 
     return (

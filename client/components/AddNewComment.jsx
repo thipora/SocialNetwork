@@ -5,23 +5,29 @@ import "../css/style.css";
 function AddNewComment(props) {
     const [name, setName] = useState('');
     const [body, setBody] = useState('')
-    const email=JSON.parse(localStorage.getItem("currentUser")).email
+    const email=JSON.parse(localStorage.getItem("currentUser")).email;
+    const token = localStorage.getItem("TOKEN");
 
     async function addNewComment() {
         const comment = new CommentClass(props.postId, name, email, body);
         const urlPost = `http://localhost:8080/comments`;
-        fetch(urlPost, {
+        await fetch(urlPost, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify(comment),
-        }).then(response => response.json())
+        }).then(response => {
+            if(!response.ok)
+                throw new Error(`Error ${response.status}: ${response.statusText}`);  
+            return response.json();
+        })
         .then(data => {
             comment.id = data.insertId;
             props.addToArr(comment);
         })
-        .catch(() => { console.log("adding fail") })
+        .catch(error => alert(error.message))
     }
 
 

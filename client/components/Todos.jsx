@@ -17,17 +17,22 @@ function Todos() {
   const token = localStorage.getItem("TOKEN");
 
   useEffect(() => {
-    fetch(`http://localhost:8080/todos/${userID}`,{
+    fetch(`http://localhost:8080/todos?userId=${userID}`,{
       headers: {
+        'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
       }
     })
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok)
+          throw new Error(`Error ${response.status}: ${response.statusText}`);  
+        return response.json();
+      })
       .then((data) => {
         setTodos(data);
       })
       .catch(error => {
-        alert(error);
+        alert(error.message);
       });
   }, [])
 
@@ -149,7 +154,7 @@ function Todos() {
 
       <button onClick={() => { setAddTodo(!addTodo) }}>Add Todo</button>
       {addTodo && <AddNewTodo addToArr={addToArr} />}
-      {todos.map((todo) => { return (searchedTodos(todo) && <Todo key={todo.id} todo={todo} deleteFromArr={deleteFromArr} updateArr={updateArr} />) })}
+      {todos.map((todo) => (searchedTodos(todo) && <Todo key={todo.id} todo={todo} deleteFromArr={deleteFromArr} updateArr={updateArr} />) )}
     </>
   )
 }

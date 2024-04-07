@@ -13,13 +13,9 @@ import cors from 'cors';
 const app = express();
 app.use(express.json());
 
-// const corsOptions = {
-//   origin: 'http://localhost:8080'
-// };
-// app.use(cors(corsOptions));
 app.use(cors());
-app.use('/passwords', passwordsRouter);
 app.use('/login', loginController);
+app.use('/passwords', passwordsRouter);
 app.use(authenticateToken);
 app.use('/users', userRouter);
 app.use('/todos', todoRouter);

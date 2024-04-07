@@ -12,6 +12,7 @@ function Post(props) {
   const [toUpdate, setToUpdate] = useState(false)
   const navigate = useNavigate()
   const { userID } = useContext(UserContext);
+  const token = localStorage.getItem('TOKEN');
 
   const handleExpand = () => {
     setIsExpanded(!isExpanded);
@@ -20,23 +21,21 @@ function Post(props) {
 
   function deletePost() {
     try{
-      fetch(`http://localhost:8080/posts/${post.id}`, {
+      fetch(`http://localhost:8080/posts?id=${post.id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
       }
     }).then(response => {
-      response.json();
       if (!response.ok) {
-        throw new Error('Network response was not ok');
-    }
-
+        throw new Error(`Error ${response.status}: ${response.statusText}`);  
+      }
+      return response.json();
     })
     props.deletePost(post.id);
     }
-    catch(error){
-      alert(error)
-    }
+    catch(error){ alert(error.message)}
   }
 
 

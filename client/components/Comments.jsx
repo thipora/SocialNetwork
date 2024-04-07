@@ -12,11 +12,22 @@ function Comments() {
   const data = useLocation();
   const postId = data.state.postId;
   const { userID } = useContext(UserContext);
+  const token = localStorage.getItem("TOKEN");
 
   useEffect(() => {
-    fetch(`http://localhost:8080/comments/${postId}`)
-    .then(response => response.json())
+    fetch(`http://localhost:8080/comments?postId=${postId}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    })
+    .then(response => {
+      if(!response.ok)
+        throw new Error(`Error ${response.status}: ${response.statusText}`);  
+        return response.json();
+    })
     .then(data => { setComments(data) })
+    .catch(error => alert(error.message))
   },
     []);
 

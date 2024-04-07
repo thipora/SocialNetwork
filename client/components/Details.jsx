@@ -18,6 +18,7 @@ function Details() {
     const navigate=useNavigate()
     const location = useLocation();
     const email = location.state.email;
+    const token = localStorage.getItem('TOKEN');
 
     async function postNewUser() {
       try {
@@ -26,9 +27,14 @@ function Details() {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
           },
             body: JSON.stringify(currentUser),
-          }).then(response => response.json())
+          }).then(response => {
+            if(!response.ok)
+              throw new Error(`Error ${response.status}: ${response.statusText}`);  
+              return response.json();
+            })
           .then(data => {
             currentUser.id = data.insertId;
             localStorage.setItem("currentUser", JSON.stringify(currentUser));
@@ -36,7 +42,7 @@ function Details() {
             navigate(`/user/${currentUser.id}/home`);
         });
       } catch (error) {
-        console.error("Error in postNewUser:", error);
+        alert(error.message);
       }
     }
 

@@ -16,41 +16,45 @@ function Register() {
       const hashedPassword = CryptoJS.SHA256(password).toString();
       return hashedPassword;
     };
+    const hash_password = generatePasswordHash(password);
 
     function isValidUser() {
       if (password === verifyPassword) {
-          const hashPassword = generatePasswordHash(password);
-  
-          fetch(`http://localhost:8080/passwords/${email}`)
-              .then(response => response.json())
-              .then(data => {
-                  if (data.length === 0) {
-                      fetch("http://localhost:8080/passwords", {
-                          method: 'POST',
-                          headers: {
-                              'Content-Type': 'application/json',
-                          },
-                          body: JSON.stringify({ email: email, password: hashPassword }),
-                      })
-                          .then(response => response.json())
-                          .then(() => getToken())
-                          .then(navigate("/register/details", { state: { email: email } }))
-                          .catch(error => {
-                              console.log("Error creating new user:", error);
-                              alert("An error occurred while creating the user. Please try again.");
-                          });
-                  } else {
-                    console.log(data);
-                      alert("User already exists");
-                  }
-              })
-              .catch(error => {
-                  console.error("Error checking if user exists:", error);
-                  alert("An error occurred while checking if user exists. Please try again.");
-              });
+          fetch(`http://localhost:8080/passwords?email=${email}`)
+          .then(response => {
+            if (!response.ok) {
+              throw new Error(`Error ${response.status}: ${response.statusText}`);
+            }
+            return response.json();
+          })
+          .then(data => {
+            if(Object.values(data[0])[0]==1){
+              throw new Error(`you exist user`);  
+            }
+          })
+          .then(() => postPasswords())
+          .then(() => navigate("/register/details", { state: { email: email } }))
+          .catch(error => {
+            alert(error.message);
+          });
       } else {
           alert("Passwords do not match");
       }
+  }
+
+  function postPasswords(){
+    fetch(`http://localhost:8080/passwords`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({"email": email, "password_hash": hash_password})
+    })
+    .then(response => response.json())
+    .then(() => getToken())
+    .catch(error => {
+      alert("fail regist passwords");
+    });
   }
   
   function getToken(){
@@ -59,13 +63,12 @@ function Register() {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({"email": email, "password_hash": generatePasswordHash(password)})
+      body: JSON.stringify({"email": email, "password_hash": hash_password})
     })
     .then(response => response.json())
     .then(data => {
       localStorage.setItem("TOKEN", data.accessToken);
     })
-    .then(() => getUser())
     .catch(error => {
       alert("An error occurred, try again!");
     });

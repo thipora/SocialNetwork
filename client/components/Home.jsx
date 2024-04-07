@@ -9,7 +9,7 @@ import "../css/style.css";
 
 function Home() {
     const { userID } = useContext(UserContext);
-    const name = JSON.parse(localStorage.getItem("currentUser")).username
+    const name = JSON.parse(localStorage.getItem("currentUser")).username;
     
     const navigate = useNavigate()
     function logOut() {

@@ -8,20 +8,27 @@ function AddNewPost(props) {
     const [title, setTitle] = useState('');
     const [body, setBody] = useState('')
     const { userID } = useContext(UserContext);
+    const token = localStorage.getItem("TOKEN");
+
     async function addNewPost() {
         let post = new PostObject(userID, title, body);
-        fetch("http://localhost:8080/posts", {
+        await fetch("http://localhost:8080/posts", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify(post)
-        }).then(response => response.json())
+        }).then(response => {
+            if(!response.ok)
+                throw new Error(`Error ${response.status}: ${response.statusText}`);  
+            return response.json();
+        })
         .then(data => {
             post.id = data.insertId;
             props.addToArr(post);
         })
-        .catch(() => { console.log("adding fail") })
+        .catch(error => alert(error.message))
     }
 
     return (

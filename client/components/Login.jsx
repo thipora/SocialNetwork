@@ -10,7 +10,6 @@ import { UserContext } from '../UserProvider.jsx';
  function Login() {
     const [email, setEmail] = useState(null);
     const [password, setPassword] = useState(null);
-    const [token, setToken] = useState(null);
     const navigate=useNavigate()
     const { updateUserID } = useContext(UserContext);
 
@@ -18,6 +17,7 @@ import { UserContext } from '../UserProvider.jsx';
       const hashedPassword = CryptoJS.SHA256(password).toString();
       return hashedPassword;
     };
+    const hash_password = generatePasswordHash(password);
 
     function isValidUser(){
       fetch(`http://localhost:8080/login`, {
@@ -25,21 +25,24 @@ import { UserContext } from '../UserProvider.jsx';
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({"email": email, "password_hash": generatePasswordHash(password)})
+        body: JSON.stringify({"email": email, "password_hash": hash_password})
       })
       .then(response => response.json())
       .then(data => {
+        if(!data.accessToken){
+          throw new Error(`user does not exist or password uncorrect`);  
+        }
         localStorage.setItem("TOKEN", data.accessToken);
-        setToken(data.accessToken);
       })
       .then(() => getUser())
       .catch(error => {
-        alert("An error occurred, try again!");
+        alert(error.message);
       });
     }
 
     function getUser(){
-      fetch(`http://localhost:8080/users/${email}`,{
+      const token = localStorage.getItem('TOKEN');
+      fetch(`http://localhost:8080/users?email=${email}`,{
         headers: {
           'Authorization': `Bearer ${token}`
         }

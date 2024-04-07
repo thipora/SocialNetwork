@@ -6,27 +6,28 @@ function Comment(props) {
   const [toUpdate, setToUpdate] = useState(false)
   const comment = props.comment
   const email = JSON.parse(localStorage.getItem("currentUser")).email
+  const token = localStorage.getItem("TOKEN");
 
   function deleteComment() {
    try{
-    fetch(`http://localhost:8080/comments/id=${comment.id}`, {
+    fetch(`http://localhost:8080/comments?id=${comment.id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
       }
     }).then(response => {
-      response.json();
       if (!response.ok) {
-        throw new Error('Network response was not ok');
-    }
+        throw new Error(`Error ${response.status}: ${response.statusText}`);  
+      }
+      return response.json();
     })
     props.deleteFromArr(comment.id);
    }
    catch(error){
-    console.log(error)
-   }
-
+    alert(error.message)
   }
+}
 
   return (
     <li key={comment.id}>

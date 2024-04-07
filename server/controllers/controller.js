@@ -4,26 +4,7 @@ export default class Controller {
     async handleRequest(req, res, next, action, objectName) {
         try {
             const service = new Service();
-            let result;
-            switch (action) {
-                case 'get':
-                    result = await service.get(objectName, req.params);
-                    if (!result || result.length === 0) {
-                        throw { statusCode: 404, message: 'Resource not found' };
-                    }            
-                    break;
-                case 'create':
-                    result = await service.create(objectName, req.body);
-                    break;
-                case 'delete':
-                    result = await service.delete(objectName, req.params, req.body);
-                    break;
-                case 'update':
-                    result = await service.update(objectName, req.params.id, req.body);
-                    break;
-                default:
-                    throw new Error('Invalid action');
-            }
+            const result = await service[action](objectName, req.query, req.body);
             return res.status(200).json(result);
         }
         catch (ex) {

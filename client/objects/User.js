@@ -1,6 +1,6 @@
 export class UserObject{
-    constructor(userNmae,email,address,phone){
-        this.userNmae=userNmae
+    constructor(username,email,address,phone){
+        this.username=username
         this.email=email
         this.address= address
         this.phone=phone

@@ -12,31 +12,24 @@ function Posts() {
   const [posts, setPosts] = useState([]);
   const [searchCriteria, setSearchCriteria] = useState('none');
   const { userID } = useContext(UserContext);
-
-  useEffect(() => {
-    fetch(`http://localhost:8080/posts/${userID}`)
-    .then((response) => {
-      return response.json();
-    })
-    .then((data) => setPosts(data))
-    .catch(error => {
-      console.error(error);
-      alert("error: " + error);
-    });
-  }, [])
-
-
-  useEffect(() => {
-    fetch(`http://localhost:8080/posts/${userID}`)
-      .then((response) => {
+  const token = localStorage.getItem('TOKEN');
+  
+    useEffect(() => {
+      fetch(`http://localhost:8080/posts?userId=${userID}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`Error ${response.status}: ${response.statusText}`);
+        }
         return response.json();
       })
-      .then((data) => setPosts(data))
-      .catch(error => {
-        console.log(error.message);
-        alert(error.message);
-      });
-  }, [])
+      .then(data => setPosts(data))
+      .catch(error => alert(error.message));
+    }, []);
   
 
   const handleSearchChange = (event) => {
