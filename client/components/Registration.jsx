@@ -17,39 +17,6 @@ function Register() {
       return hashedPassword;
     };
 
-
-    // function isValidUser(){
-    //     if(password===verifyPassword){
-    //       const hashPassword = generatePasswordHash(password);
-    //         fetch(`http://localhost:8080/passwords?id=${email}`)
-    //         .then(response => response.json())
-    //         .then(data=>
-    //             {if(data.length === 0){
-    //               fetch("http://localhost:8080/passwords", {
-    //                 method: 'POST',
-    //                 headers: {
-    //                     'Content-Type': 'application/json',
-    //                 },
-    //                 body: JSON.stringify({email: email, password: hashPassword}),
-    //               }).then(response => {
-    //                 response.json();
-    //               }).then(props.addToArr(photo)).catch(() => { console.log("adding fail") })
-    //               navigate("/register/details", {state:{email:email ,password:hashPassword }})
-    //             }
-    //             else{
-    //               alert("User name is invalid");
-    //             }
-    //         })
-    //         .catch(error => {
-    //           console.error("Error checking if user exists:", error);
-    //           alert("An error occurred while checking if user exists. Please try again.");
-    //       }); 
-    //     }
-    //    else{
-    //     alert("Invalid password");
-    //    }
-    // }
-
     function isValidUser() {
       if (password === verifyPassword) {
           const hashPassword = generatePasswordHash(password);
@@ -66,6 +33,7 @@ function Register() {
                           body: JSON.stringify({ email: email, password: hashPassword }),
                       })
                           .then(response => response.json())
+                          .then(() => getToken())
                           .then(navigate("/register/details", { state: { email: email } }))
                           .catch(error => {
                               console.log("Error creating new user:", error);
@@ -83,6 +51,24 @@ function Register() {
       } else {
           alert("Passwords do not match");
       }
+  }
+  
+  function getToken(){
+    fetch(`http://localhost:8080/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({"email": email, "password_hash": generatePasswordHash(password)})
+    })
+    .then(response => response.json())
+    .then(data => {
+      localStorage.setItem("TOKEN", data.accessToken);
+    })
+    .then(() => getUser())
+    .catch(error => {
+      alert("An error occurred, try again!");
+    });
   }
 
   return (

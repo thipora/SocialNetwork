@@ -9,10 +9,17 @@ export default async function getQuery(table, action, fieldsParam) {
     switch (action) {
         case 'get':
             query = `SELECT * FROM ${DB_NAME}.${table}`;
-            const paramKey = Object.keys(fieldsParam)[0];
-            if (paramKey) {
-                query += ` WHERE ${paramKey} = ?`;
+            const paramKeys = Object.keys(fieldsParam);
+            if (paramKeys.length > 0) {
+                query += ' WHERE';
+                paramKeys.forEach((key, index) => {
+                    query += ` ${key} = ?`;
+                    if (index < paramKeys.length - 1) {
+                        query += ' AND';
+                    }
+                });
             }        
+            
             break;
         case 'create':
             const queryFields = `DESC ${DB_NAME}.${table}`;

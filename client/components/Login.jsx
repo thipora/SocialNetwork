@@ -17,13 +17,27 @@ import { UserContext } from '../UserProvider.jsx';
       const hashedPassword = CryptoJS.SHA256(password).toString();
       return hashedPassword;
     };
-    
+
     function isValidUser(){
-      fetch(`http://localhost:8080/passwords/${email}`)
+      fetch(`http://localhost:8080/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({"email": email, "password_hash": generatePasswordHash(password)})
+      })
       .then(response => response.json())
       .then(data => {
-        if (data[0].password_hash ==  generatePasswordHash(password)) {
-          fetch(`http://localhost:8080/users/${email}`)
+        localStorage.setItem("TOKEN", data.accessToken);
+      })
+      .then(() => getUser())
+      .catch(error => {
+        alert("An error occurred, try again!");
+      });
+    }
+
+    function getUser(){
+      fetch(`http://localhost:8080/users/${email}`)
           .then(response => response.json())
           .then(data => {
             const currentUser = data[0];
@@ -31,14 +45,6 @@ import { UserContext } from '../UserProvider.jsx';
             updateUserID();
             navigate(`/user/${currentUser.id}/home`);
           })
-        } else {
-          alert("A problem occurred, try again!");
-        }
-      })
-      .catch(error => {
-        console.log("Error fetching user data:", error);
-        alert("An error occurred, try again!");
-      });
     }
 
 

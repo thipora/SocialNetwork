@@ -14,9 +14,14 @@ function Todos() {
   const [searchCriteria, setSearchCriteria] = useState('none');
   const [searchInputCriteria, setSearchInputCriteria] = useState('');
   const { userID } = useContext(UserContext);
+  const token = localStorage.getItem("TOKEN");
 
   useEffect(() => {
-    fetch(`http://localhost:8080/todos/${userID}`)
+    fetch(`http://localhost:8080/todos/${userID}`,{
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
       .then((response) => response.json())
       .then((data) => {
         setTodos(data);
