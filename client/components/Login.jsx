@@ -10,6 +10,7 @@ import { UserContext } from '../UserProvider.jsx';
  function Login() {
     const [email, setEmail] = useState(null);
     const [password, setPassword] = useState(null);
+    const [token, setToken] = useState(null);
     const navigate=useNavigate()
     const { updateUserID } = useContext(UserContext);
 
@@ -29,6 +30,7 @@ import { UserContext } from '../UserProvider.jsx';
       .then(response => response.json())
       .then(data => {
         localStorage.setItem("TOKEN", data.accessToken);
+        setToken(data.accessToken);
       })
       .then(() => getUser())
       .catch(error => {
@@ -37,7 +39,11 @@ import { UserContext } from '../UserProvider.jsx';
     }
 
     function getUser(){
-      fetch(`http://localhost:8080/users/${email}`)
+      fetch(`http://localhost:8080/users/${email}`,{
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
           .then(response => response.json())
           .then(data => {
             const currentUser = data[0];

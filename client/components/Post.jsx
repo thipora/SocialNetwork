@@ -35,7 +35,7 @@ function Post(props) {
     props.deletePost(post.id);
     }
     catch(error){
-      console.log(error)
+      alert(error)
     }
   }
 

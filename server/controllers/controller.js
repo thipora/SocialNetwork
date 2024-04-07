@@ -8,6 +8,9 @@ export default class Controller {
             switch (action) {
                 case 'get':
                     result = await service.get(objectName, req.params);
+                    if (!result || result.length === 0) {
+                        throw { statusCode: 404, message: 'Resource not found' };
+                    }            
                     break;
                 case 'create':
                     result = await service.create(objectName, req.body);
@@ -24,10 +27,7 @@ export default class Controller {
             return res.status(200).json(result);
         }
         catch (ex) {
-            const err = {};
-            err.statusCode = 500;
-            err.message = ex;
-            next(err);
+            next(ex);
         }
     }
 }

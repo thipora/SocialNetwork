@@ -14,6 +14,7 @@ function Home() {
     const navigate = useNavigate()
     function logOut() {
         localStorage.removeItem("currentUser");
+        localStorage.removeItem("TOKEN");
         navigate("/login");
     }
 

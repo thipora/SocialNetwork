@@ -15,11 +15,29 @@ function Posts() {
 
   useEffect(() => {
     fetch(`http://localhost:8080/posts/${userID}`)
-      .then((response) => response.json())
-      .then((data) => {
-        setPosts(data);
-      })
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => setPosts(data))
+    .catch(error => {
+      console.error(error);
+      alert("error: " + error);
+    });
   }, [])
+
+
+  useEffect(() => {
+    fetch(`http://localhost:8080/posts/${userID}`)
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => setPosts(data))
+      .catch(error => {
+        console.log(error.message);
+        alert(error.message);
+      });
+  }, [])
+  
 
   const handleSearchChange = (event) => {
     setSearchCriteria(event.target.value);

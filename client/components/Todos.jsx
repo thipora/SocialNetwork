@@ -26,6 +26,9 @@ function Todos() {
       .then((data) => {
         setTodos(data);
       })
+      .catch(error => {
+        alert(error);
+      });
   }, [])
 
   useEffect(() => {
