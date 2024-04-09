@@ -1,24 +1,25 @@
 import express from 'express';
-import jwt from 'jsonwebtoken';
 import Service from '../service/service.js'
 import 'dotenv/config'
+import {createToken} from '../middleware/authenticateToken.js';
 
 const loginController = express.Router();
 
-loginController.post('/', async (req, res) => {
+loginController.post('/', async (req, res, next) => {
   try {
     const service = new Service();
-    const result = await service.get("passwords", req.body);
+    const existingUser = await service.get("passwords", req.body);
 
-      if (Object.values(result[0]) == 1) {
-        const accessToken = jwt.sign({ email: req.body.email }, process.env.ACCESS_TOKEN_SECRET);
-        res.json({ accessToken: accessToken });
-      } else {
-        res.json({});
-      }
+    if (Object.values(existingUser[0]) == 0) {
+      res.status(401);
+      return next(res);
+    }
+
+    const accessToken = createToken(req, res);
+    return res.json({ accessToken: accessToken });
+
   } catch (error) {
-    console.error('Error authenticating user:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    return next(error);
   }
 });
 

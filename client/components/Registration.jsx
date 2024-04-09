@@ -18,60 +18,31 @@ function Register() {
     };
     const hash_password = generatePasswordHash(password);
 
-    function isValidUser() {
+    function register() {
       if (password === verifyPassword) {
-          fetch(`http://localhost:8080/passwords?email=${email}`)
-          .then(response => {
-            if (!response.ok) {
-              throw new Error(`Error ${response.status}: ${response.statusText}`);
-            }
-            return response.json();
-          })
-          .then(data => {
-            if(Object.values(data[0])[0]==1){
-              throw new Error(`you exist user`);  
-            }
-          })
-          .then(() => postPasswords())
-          .then(() => navigate("/register/details", { state: { email: email } }))
-          .catch(error => {
-            alert(error.message);
-          });
+        fetch(`http://localhost:8080/register`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({"email": email, "password_hash": hash_password})
+        })
+        .then(response =>{
+          if(!response.ok){
+            throw new Error('An error occurred, try again!')
+          }
+          return response.json()
+        })
+        .then(data => {
+          localStorage.setItem("TOKEN", data.accessToken);
+        })
+        .then(() => navigate("/register/details", { state: { email: email } }))
+        .catch(error => {
+          alert(error.message);
+        });
       } else {
           alert("Passwords do not match");
       }
-  }
-
-  function postPasswords(){
-    fetch(`http://localhost:8080/passwords`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({"email": email, "password_hash": hash_password})
-    })
-    .then(response => response.json())
-    .then(() => getToken())
-    .catch(error => {
-      alert("fail regist passwords");
-    });
-  }
-  
-  function getToken(){
-    fetch(`http://localhost:8080/login`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({"email": email, "password_hash": hash_password})
-    })
-    .then(response => response.json())
-    .then(data => {
-      localStorage.setItem("TOKEN", data.accessToken);
-    })
-    .catch(error => {
-      alert("An error occurred, try again!");
-    });
   }
 
   return (
@@ -79,7 +50,7 @@ function Register() {
       <input type='email' placeholder='Email' onChange={(e) => setEmail(e.target.value)}required/>
       <input type='password' placeholder='Password' onChange={(e) => setPassword(e.target.value)}required/>
       <input type='password' placeholder='Verify Password' onChange={(e) => setVerifyPassword(e.target.value)} required/>
-      <button type='submit' onClick={isValidUser}>Register</button>
+      <button type='submit' onClick={register}>Register</button>
 
     </>
   )

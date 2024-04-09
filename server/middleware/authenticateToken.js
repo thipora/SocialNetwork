@@ -12,6 +12,16 @@ export const authenticateToken = (req, res, next) => {
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
     if (err) return res.sendStatus(403);
     req.user = user;
-    next();
+    return next();
   });
 }
+
+export const createToken = (req, res) => {
+  try {
+      const accessToken = jwt.sign(req.body, process.env.ACCESS_TOKEN_SECRET);
+      return accessToken;
+  } catch (error) {
+      console.error('Error creating token:', error);
+      res.status(500).json({ error: 'Internal server error' });
+  }
+};

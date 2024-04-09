@@ -1,36 +1,3 @@
-// import React from 'react';
-// import { useContext } from 'react';
-// import {
-//   useNavigate
-// } from "react-router-dom";
-// import "../css/style.css";
-// import { UserContext } from '../UserProvider';
-
-
-// function Info() {
-//     const navigate=useNavigate()
-//     const user=JSON.parse(localStorage.getItem("currentUser"))
-//     const { userID } = useContext(UserContext);
-
-
-//     function hideInfo(){
-//         navigate(`/user/${userID}/home`)
-//     }
-//    return(
-//     <>
-//         <p> user name: {user.username}</p>
-//         <p> email: {user.email}</p>
-//         <p> phone: {user.phone}</p>
-//         <p> address: {user.address}</p>
-//         <button onClick={hideInfo}>Hide info</button>
-        
-//     </>
-//    )
-//    }
-  
-//   export default Info
-
-
 import React, { useState } from 'react';
 import { useContext } from 'react';
 import { useNavigate } from "react-router-dom";
@@ -50,28 +17,14 @@ function Info() {
         return hashedPassword;
     };
 
-    function handleChangePassword(event) {
+    function updatePassword() {
         event.preventDefault();
         const currentPassword = prompt("Please enter your current password:");
-        const password_hash = generatePasswordHash(currentPassword)
-        fetch(`http://localhost:8080/passwords?email=${email}&password_hash=${password_hash}`)
-        .then(response => response.json())
-        .then(data => {
-            if(Object.values(data[0])[0]==0){
-                throw new Error(`fail update password`);  
-            }
-        })
-        .then(() => updatePassword())
-        .catch(error => {
-            alert(error.message);
-        });
-    }
-
-    function updatePassword() {
+        const currentPassword_hash = generatePasswordHash(currentPassword);
         const newPassword = prompt("Please enter your new password:");
         const verifyPassword = prompt("enter verify password:");
         if(verifyPassword == newPassword){    
-            fetch(`http://localhost:8080/passwords?email=${email}`, {
+            fetch(`http://localhost:8080/passwords?email=${email}&password_hash=${currentPassword_hash}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
@@ -97,19 +50,15 @@ function Info() {
         }
     }
 
-    function hideInfo() {
-        navigate(`/user/${userID}/home`)
-    }
-
     return (
         <>
             <p> user name: {user.username}</p>
             <p> email: {user.email}</p>
             <p> phone: {user.phone}</p>
             <p> address: {user.address}</p>
-            <a href="#" onClick={handleChangePassword}>Change Password</a>
+            <a href="#" onClick={updatePassword}>Change Password</a>
             <br />
-            <button onClick={hideInfo}>Hide info</button>
+            <button onClick={() => navigate(`/user/${userID}/home`)}>Hide info</button>
 
         </>
     )

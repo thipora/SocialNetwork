@@ -16,6 +16,7 @@ function Posts() {
   
     useEffect(() => {
       fetch(`http://localhost:8080/posts?userId=${userID}`, {
+        method: 'GET',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`

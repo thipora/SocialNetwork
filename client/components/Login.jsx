@@ -19,7 +19,7 @@ import { UserContext } from '../UserProvider.jsx';
     };
     const hash_password = generatePasswordHash(password);
 
-    function isValidUser(){
+    function login(){
       fetch(`http://localhost:8080/login`, {
         method: 'POST',
         headers: {
@@ -27,33 +27,43 @@ import { UserContext } from '../UserProvider.jsx';
         },
         body: JSON.stringify({"email": email, "password_hash": hash_password})
       })
-      .then(response => response.json())
+      .then(response => {
+        if(!response.ok)
+          throw new Error('error, please try egain whith anouther email or password or sing up')
+        return response.json();
+      })
       .then(data => {
-        if(!data.accessToken){
-          throw new Error(`user does not exist or password uncorrect`);  
-        }
         localStorage.setItem("TOKEN", data.accessToken);
       })
       .then(() => getUser())
       .catch(error => {
-        alert(error.message);
-      });
+          alert(error.message);
+        });
     }
+
 
     function getUser(){
       const token = localStorage.getItem('TOKEN');
       fetch(`http://localhost:8080/users?email=${email}`,{
+        method: 'GET',
         headers: {
+          'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         }
       })
-          .then(response => response.json())
-          .then(data => {
-            const currentUser = data[0];
-            localStorage.setItem("currentUser", JSON.stringify(currentUser));
-            updateUserID();
-            navigate(`/user/${currentUser.id}/home`);
-          })
+      .then(response => {
+        if(!response.ok)
+          throw new Error('ERROR: ' + response.status + ' ' + response.message)
+        return response.json();
+      })
+      .then(data => {
+        const currentUser = data[0];
+        localStorage.setItem("currentUser", JSON.stringify(currentUser));
+        updateUserID();
+        navigate(`/user/${currentUser.id}/home`);
+      }).catch(error => {
+          alert(error.message);
+        });
     }
 
 
@@ -61,7 +71,7 @@ import { UserContext } from '../UserProvider.jsx';
     <>
       <input type='email' placeholder='Email' onChange={(e) => setEmail(e.target.value)}/>
       <input type='password' placeholder='Password' onChange={(e) => setPassword(e.target.value)}/>
-      <button onClick={isValidUser}>Login</button>
+      <button onClick={login}>Login</button>
       <Link to="/register">New User?</Link>
     </>
   )

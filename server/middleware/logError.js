@@ -11,6 +11,8 @@ function errMessageForClient(statusCode) {
             return 'Invalid request parameters';
         case 401:
             return 'Authorization required';
+        case 403:
+            return 'Forbidden';    
         case 404:
             return 'Not found';
         case 500:

@@ -16,6 +16,7 @@ function Comments() {
 
   useEffect(() => {
     fetch(`http://localhost:8080/comments?postId=${postId}`, {
+      method: 'GET',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`

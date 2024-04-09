@@ -8,6 +8,7 @@ import { passwordsRouter } from './router/passwordsRouter.js'
 import { logErrors } from './middleware/logError.js'
 import { authenticateToken } from './middleware/authenticateToken.js'
 import loginController from './controllers/loginController.js'
+import registerController from './controllers/registerController.js'
 import cors from 'cors';
 
 const app = express();
@@ -15,8 +16,9 @@ app.use(express.json());
 
 app.use(cors());
 app.use('/login', loginController);
-app.use('/passwords', passwordsRouter);
+app.use('/register', registerController);
 app.use(authenticateToken);
+app.use('/passwords', passwordsRouter);
 app.use('/users', userRouter);
 app.use('/todos', todoRouter);
 app.use('/posts', postRouter);

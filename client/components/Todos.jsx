@@ -18,6 +18,7 @@ function Todos() {
 
   useEffect(() => {
     fetch(`http://localhost:8080/todos?userId=${userID}`,{
+      method: 'GET',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
