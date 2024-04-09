@@ -17,7 +17,7 @@ function Todos() {
   const token = localStorage.getItem("TOKEN");
 
   useEffect(() => {
-    fetch(`http://localhost:8080/todos?userId=${userID}`,{
+    fetch(`http://localhost:8080/todos`,{
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

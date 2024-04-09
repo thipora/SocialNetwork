@@ -7,6 +7,9 @@ const DB_NAME = process.env.DB_NAME;
 export default async function getQuery(table, action, queryParams, params) {
     let query = "";
     switch (action) {
+        case 'getAll':
+            query = `SELECT * FROM ${DB_NAME}.${table}`;
+            break;
         case 'get':
             query = `SELECT * FROM ${DB_NAME}.${table}`;
             if(table=='passwords')

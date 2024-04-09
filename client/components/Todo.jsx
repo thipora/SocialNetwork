@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import UpdateTodo from "./UpdateTodo";
+import { UserContext } from '../UserProvider';
 import "../css/style.css";
 
 function Todo(props) {
     let todo = props.todo;
     const [updateTodo, setUpdateTodo] = useState(false);
     const [completed, setCompleted] = useState(todo.completed);
+    const { userID } = useContext(UserContext);
     const token = localStorage.getItem("TOKEN");
 
     function deleteTodo() {
@@ -54,9 +56,13 @@ function Todo(props) {
     return (
         <>
             <p><input type="checkbox" onChange={updateStatusTodo} checked={completed} />  id:{todo.id} title:{todo.title}</p>
-            <button onClick={deleteTodo}>Delete</button>
-            <button onClick={() => { setUpdateTodo(!updateTodo) }}>to update</button>
-            {updateTodo && <UpdateTodo todo={todo} updateArr={props.updateArr} />}
+            { (todo.userId==userID)&&
+                <>
+                <button onClick={deleteTodo}>Delete</button>
+                <button onClick={() => { setUpdateTodo(!updateTodo) }}>to update</button>
+                {updateTodo && <UpdateTodo todo={todo} updateArr={props.updateArr} />}
+                </>
+            }
             <p>------------------------------</p>
         </>
 

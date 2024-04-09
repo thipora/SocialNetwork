@@ -3,6 +3,12 @@ import getQuery from './query.js'
 
 export default class Service {
 
+    async getAll(table, queryParams) {
+        const query = await getQuery(table, "getAll");
+        const result = await executeQuery(query, null);
+        return result;
+    }
+
     async get(table, queryParams) {
         const query = await getQuery(table, "get", queryParams);
         const result = await executeQuery(query, Object.values(queryParams));

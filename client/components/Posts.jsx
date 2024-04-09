@@ -15,7 +15,7 @@ function Posts() {
   const token = localStorage.getItem('TOKEN');
   
     useEffect(() => {
-      fetch(`http://localhost:8080/posts?userId=${userID}`, {
+      fetch(`http://localhost:8080/posts`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
